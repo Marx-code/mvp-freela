@@ -1,16 +1,21 @@
 const User = require('../models/User');
 const UserProfile = require('../models/UserProfile');
+const bcrypt = require('bcrypt');
 
 const userController = {
   // Criar novo usuário
   create: async (req, res) => {
     try {
-      const { nome, email, senha } = req.body;
+      let { nome, email, senha } = req.body;
 
       if (!nome || !email || !senha) {
         return res.status(400).json({ message: 'Campos obrigatórios: nome, email, senha.' });
       }
 
+      const senhaHash = await bcrypt.hash(senha, 10);
+      console.log(senhaHash);
+      senha = senhaHash;
+      
       const novoUsuario = await User.create({ nome, email, senha });
       res.status(201).json(novoUsuario);
     } catch (err) {
