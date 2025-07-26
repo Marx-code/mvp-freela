@@ -13,7 +13,6 @@ const userController = {
       }
 
       const senhaHash = await bcrypt.hash(senha, 10);
-      console.log(senhaHash);
       senha = senhaHash;
       
       const novoUsuario = await User.create({ nome, email, senha });
